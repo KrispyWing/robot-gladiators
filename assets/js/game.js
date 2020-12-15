@@ -95,6 +95,18 @@ var startGame = function() {
 
             // Pass the pickedEnemyName variable value into the fight function where it will assume the enemyName parameter
             fight(pickedEnemyName);
+            
+            //if we're not on the last enemy in the array
+            if (playerHealth > 0 && i < enemyNames.length - 1) {
+
+                //ask player if they want to enter the store() function
+                var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
+
+                //if yes take them to the store() function
+                if (storeConfirm) {
+                    shop();
+                }
+            }
         }
 
         else {
@@ -123,6 +135,58 @@ var endGame = function() {
     }
     else {
         window.alert("Thank you for playing Robot Gladiators! Come back Soon!");
+    }
+}
+
+var shop = function() {
+    //ask player what they would like to do
+    var shopOptionPrompt = window.prompt(
+        "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the shop? Please enter one: 'REFILL, 'UPGRADE', or 'LEAVE' to make a choice"
+    );
+
+    //switch to carry out the action
+    switch (shopOptionPrompt) {
+        case "refill":
+        case "REFILL":
+            if (playerMoney >= 7) {
+            window.alert("Refilling the players health by 20 for 7 dollars.");
+            //Increase health and decrease money
+            playerHealth = playerHealth + 20;
+            playerMoney = playerMoney - 7;
+            }
+
+            else {
+                window.alert("You don't have enough money!");
+            }
+            break;
+        
+        case "upgrade":
+        case "UPGRADE":
+            if (playerMoney >= 7) {
+            window.alert("Upgrading players attack power by 6 for 7 dollars.");
+
+            //increase attack and decrese money
+            playerAttack = playerAttack + 6;
+            playerMoney = playerMoney - 7;
+            }
+            else {
+                window.alert("You don't have enough Money!");
+            }
+            break;
+
+        case "leave":
+        case "LEAVE":
+            window.alert("Leaving the store.");
+
+            // do nothing, so function ends
+            break;
+        
+        default:
+            window.alert("You did not pick a valid option, Try Again.");
+
+            // call shop() function again to force player to pick a valid option
+            shop();
+            break;
     }
 }
 
