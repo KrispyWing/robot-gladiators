@@ -100,45 +100,54 @@ var fightOrSkip = function() {
 // This creates a function named "fight"
 
 var fight = function(enemy) {
+    //keep track of who goes first
+    var isPlayerTurn = true;
+
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
+    }
+
     //repeat and execute while enemy robot is alive
-
     while(enemy.health > 0 && playerInfo.health > 0) {
-        //call function to ask player if they want to fight or skip
-        if (fightOrSkip()) {
-            //if true leave fight by breaking the loop
-            break;
+                
+        if (isPlayerTurn) {
+            //call function to ask player if they want to fight or skip
+            if (fightOrSkip()) {
+                //if true leave fight by breaking the loop
+                break;
+            }
+            // Subtract the playerInfo.attack value from the enemy.health value and log it
+            var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+
+            enemy.health = Math.max(0, enemy.health - damage);
+            console.log(playerInfo.name + " attacked " + enemy.name + " for " + damage + " damage. " + enemy.name + " now has " + enemy.health + " health left.");
+            // Check the Enemy's health
+            if (enemy.health <= 0) {
+                window.alert(enemy.name + " has died!");
+
+                // Award player money for Winning
+                playerInfo.money = playerInfo.money + 20
+
+                // leave while() loop since enemy is dead
+                break;               
+            } else {
+                window.alert(enemy.name + " still has " + enemy.health + " health left.");
+            }
+        } else {    
+            // subtract the enemy.attack value from the playerInfo.health Value and log it
+            var damage = randomNumber(enemy.attack - 3, enemy.attack);
+            playerInfo.health = Math.max(0, playerInfo.health - damage);
+            console.log(enemy.name + " attacked " + playerInfo.name + " for " + damage + " damage. " + playerInfo.name + " now has " + playerInfo.health + " health left.");
+            // Check the players Health
+            if (playerInfo.health <= 0) {
+                window.alert(playerInfo.name + " has died!");
+                // leave while() loop if player is dead
+                break;        
+            } else {
+                window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
+            }   
         }
-    
-        // Subtract the playerInfo.attack value from the enemy.health value and log it
-        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-
-        enemy.health = Math.max(0, enemy.health - damage);
-        console.log(playerInfo.name + " attacked " + enemy.name + " for " + damage + " damage. " + enemy.name + " now has " + enemy.health + " health left.");
-        // Check the Enemy's health
-        if (enemy.health <= 0) {
-            window.alert(enemy.name + " has died!");
-
-            // Award player money for Winning
-            playerInfo.money = playerInfo.money + 20
-
-            // leave while() loop since enemy is dead
-            break;               
-        } else {
-            window.alert(enemy.name + " still has " + enemy.health + " health left.");
-        }
-
-        // subtract the enemy.attack value from the playerInfo.health Value and log it
-        var damage = randomNumber(enemy.attack - 3, enemy.attack);
-        playerInfo.health = Math.max(0, playerInfo.health - damage);
-        console.log(enemy.name + " attacked " + playerInfo.name + " for " + damage + " damage. " + playerInfo.name + " now has " + playerInfo.health + " health left.");
-        // Check the players Health
-        if (playerInfo.health <= 0) {
-            window.alert(playerInfo.name + " has died!");
-            // leave while() loop if player is dead
-            break;        
-        } else {
-            window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
-        }   
+        isPlayerTurn = !isPlayerTurn;
     }    
 };
 
